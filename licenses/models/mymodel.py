@@ -1,0 +1,71 @@
+from sqlalchemy import (
+    Column,
+    Index,
+    Integer,
+    Text,
+    BigInteger, Boolean, Date, Time, Float, ForeignKey, DateTime, create_engine)
+
+from .meta import Base
+
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine('sqlite:///Licenses.sqlite')
+Session = sessionmaker()
+Base = declarative_base(bind=engine)
+
+class MyModel(Base):
+    __tablename__ = 'models'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text)
+    value = Column(Integer)
+
+
+Index('my_index', MyModel.name, unique=True, mysql_length=255)
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    email = Column(Text, nullable=False, unique=True)
+    password = Column(Text, nullable=False)
+    first_name = Column(Text, nullable=False)
+    last_name = Column(Text, nullable=False)
+
+class Company(Base):
+    __tablename__ = 'companies'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text, nullable=False)
+    city = Column(Integer, ForeignKey("cities.id"), nullable = False)
+
+class City(Base):
+    __tablename__ = 'cities'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text)
+
+class Waste(Base):
+    __tablename__ = 'wastes'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text,  nullable=False)
+    code = Column(Text, nullable=False)
+    danger = Column(Integer, nullable=True)
+
+class License(Base):
+    __tablename__ = 'licences'
+    id = Column(Integer, primary_key=True)
+    company = Column(Integer, ForeignKey("companies.id"), nullable=False)
+    waste = Column(Integer, ForeignKey("wastes.id"), nullable=False)
+    collection = Column(Float, nullable=True)
+    transportation = Column(Float, nullable=True)
+    defusing = Column(Float, nullable=True)
+    using = Column(Float, nullable=True)
+    treatment = Column(Float, nullable=True)
+    recovery = Column(Float, nullable=True)
+    placement = Column(Float, nullable=True)
+    collectionf = Column(Float, nullable=True)
+    transportationf = Column(Float, nullable=True)
+    defusingf = Column(Float, nullable=True)
+    usingf = Column(Float, nullable=True)
+    treatmentf = Column(Float, nullable=True)
+    recoveryf = Column(Float, nullable=True)
+    placementf = Column(Float, nullable=True)
+    other = Column(Text, nullable=True)

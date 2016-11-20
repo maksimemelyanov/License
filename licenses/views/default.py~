@@ -1,0 +1,61 @@
+#-*- coding: utf-8 -*-
+from pyramid.response import Response
+from pyramid.view import view_config
+
+from sqlalchemy.exc import DBAPIError
+
+from ..models.mymodel import *
+
+from pyramid.httpexceptions import HTTPFound
+from pyramid.security import Allow, forget, remember
+from datetime import *
+
+@view_config(route_name='home', renderer='../templates/companies.jinja2')
+def my_view(request):
+    try:
+        DBSession = Session(bind=engine)
+	comps = DBSession.query(License).all()
+        complist = []
+        for comp in comps:
+            company = DBSession.query(Company).filter(comp.company == Company.id).first()
+            city = DBSession.query(City).filter(company.city == City.id).first()
+            w = DBSession.query(Waste).filter(comp.waste == Waste.id).first()
+            record = {'waste': w.name, 'code': w.code, 'class':w.danger, 'c1':comp.collection, 'c2':comp.transportation,'c3':comp.defusing, 'c4':comp.using, 'c5':comp.treatment, 'c6':comp.recovery, 'c7':comp.placement, 'company':company.name, 'city':city.name, 'other': comp.other, 'id': comp.id}
+            complist.append(record)
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {'list': complist, 'project': 'Licenses'}
+
+@view_config(route_name='company', renderer='../templates/companies.jinja2')
+def comp_view(request):
+    try:
+        DBSession = Session(bind=engine)
+	comps = DBSession.query(Company).all()
+        complist = []
+        for comp in comps:
+            city = DBSession.query(City).filter(comp.city == City.id).first()
+            record = {'name': comp.name, 'city': city.name, 'id': comp.id}
+            complist.append(record)
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {'list': complist, 'project': 'Licenses'}
+
+@view_config(route_name='compadd', renderer='../templates/adding.jinja2')
+def comp_view(request):
+    try:
+        DBSession = Session(bind=engine)
+	comps = DBSession.query(Company).all()
+        complist = []
+        for comp in comps:
+            city = DBSession.query(City).filter(comp.city == City.id).first()
+            record = {'name': comp.name, 'city': city.name, 'id': comp.id}
+            complist.append(record)
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {'c': complist, 'project': 'Licenses'}
+
+db_err_msg = """\
+При подключении к базе данных возникла ошибка.
+Возможно, база данных не инициализирована, либо отсутствует файл БД.
+Обртитесь к администратору для устранения проблем
+"""

@@ -1,0 +1,5 @@
+      [paste.app_factory]
+      main = licenses:main
+      [console_scripts]
+      initialize_Licenses_db = licenses.scripts.initializedb:main
+      

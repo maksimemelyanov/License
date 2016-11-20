@@ -1,0 +1,142 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+<script type="text/javascript">
+
+function myFunction() {
+  // Declare variables
+  console.log("У Вас включён JavaScript!");
+  var input2, input3, filter2, filter3, table, tr, td2, td3, i, input0, input1, filter0, filter1, td0, td1, info, tr1, input4, filter4, td4;
+  input2 = document.getElementById("InputCode");
+  filter2 = input2.value.toUpperCase();
+  input3 = document.getElementById("InputWarse");
+  filter3 = input3.value.toUpperCase();
+  table = document.getElementById("myTable");
+
+  input0 = document.getElementById("InputCompany");
+  filter0 = input0.value.toUpperCase();
+  input1 = document.getElementById("InputCity");
+  filter1 = input1.value.toUpperCase();
+
+  input4 = document.getElementById("InputClass");
+  filter4 = input4.value.toUpperCase();
+
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    var tds;
+    tds = tr[i].getElementsByTagName("td");
+    td0 = tds[tds.length-4];
+    td1 = tds[tds.length-3];
+    td2 = tds[1];
+    td3 = tds[0];
+    td4 = tds[2];
+    
+    if (td2 && td3 && td0 && td1) {
+      if ((td2.innerHTML.toUpperCase().indexOf(filter2) > -1 ) && (td3.innerHTML.toUpperCase().indexOf(filter3) > -1 ) && (td0.innerHTML.toUpperCase().indexOf(filter0) > -1 ) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1 ) && (td4.innerHTML.toUpperCase().indexOf(filter4) > -1 )) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+</script>
+
+<!--div class="content" width="100%"-->
+<center>
+<style type="text/css">
+.tftable {font-size:12px; .color:#000000;width:950%;border-width: 1px;border-color: #ebab3a;border-collapse: collapse; margin: auto;}
+.tftable th {font-size:12px;background-color:#e6983b;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a;text-align:left; color: #000000; text-align: center;}
+.tftable tr {background-color:#f0c169;}
+.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a; color: #000000; text-align: center;}
+.tftable tr:hover {background-color:#ff0000;}
+.tftable a {color: #000000}
+</style>
+
+<table class="tftable" border="1" height="auto">
+<tr><td ><a href="/add?id=0">Добавить</a></td>
+<td>
+<input type="text" width = "15%" id="InputWarse" onkeyup="myFunction()" placeholder="Наименование отхода..."></td>
+<td><input type="text" width = "15%" id="InputCode" onkeyup="myFunction()" placeholder="Код ФККО..."></td>
+<td><input type="text" width = "15%" id="InputClass" onkeyup="myFunction()" placeholder="Класс опасности..."></td>
+<td><input type="text" width = "15%" id="InputCity" onkeyup="myFunction()" placeholder="Город..."></td>
+<td><input type="text" width = "15%" id="InputCompany" onkeyup="myFunction()" placeholder="Название организации...">
+</td></tr>
+</table>
+<br>
+<table id="myTable" class="tftable" border="1" height="100%">
+<tr>
+<th width="20%">Наименование отхода</th>
+<th width="10%">Код ФККО</th>
+<th width="10%">Класс опасности</th>
+<th width="25%">Разрешенный вид деятельности</th>
+<!--th width="30%">Сбор</th>
+<th width="30%">Транспортирование</th>
+<th width="30%">Обезвреживание</th>
+<th width="30%">Использование</th>
+<th width="30%">Обработка</th>
+<th width="30%">Утилизация</th>
+<th width="30%">Размещение</th-->
+<th width="15%">Владелец лицензии</th>
+<th width="30%">Город/ регион</th>
+<th width="15%">Примечания</th>
+<th width="5%">Управление</th>
+</tr>
+{% for order in list %}
+<tr>
+<td>{{order.waste}}</td>
+<td>{{order.code}}</td>
+<td>{{order.class}}</td>
+<td>
+<table class="tftable" border="1">
+<th></th><th>Документы</th><th>Факт</th>
+{% if order.c1 is not none %}
+	<tr>
+	<th>Сбор</th><td>{{order.c1}}</td><td>{{order.c1}}</td>
+	</tr>
+{% endif %}
+{% if order.c2 is not none %}
+	<tr>
+	<th>Транспортирование</th><td>{{order.c2}}</td><td>{{order.c2}}</td>
+	</tr>
+{% endif %}
+{% if order.c3 is not none %}
+	<tr>
+	<th>Обезвреживание</th><td>{{order.c3}}</td><td>{{order.c3}}</td>
+	</tr>
+{% endif %}
+{% if order.c4 is not none %}
+	<tr>
+	<th>Использование</th><td>{{order.c4}}</td><td>{{order.c4}}</td>
+	</tr>
+{% endif %}
+{% if order.c5 is not none %}
+	<tr>
+	<th>Обработка</th><td>{{order.c5}}</td><td>{{order.c5}}</td>
+	</tr>
+{% endif %}
+{% if order.c6 is not none %}
+<tr>
+<th>Утилизация</th><td>{{order.c6}}</td><td>{{order.c6}}</td>
+</tr>
+{% endif %}
+{% if order.c7 is not none %}
+<tr>
+<th>Размещение</th><td>{{order.c7}}</td><td>{{order.c7}}</td>
+</tr>
+{% endif %}
+</table>
+</td>
+<td id="company">{{order.company}}</td>
+<td id="city">{{order.city}}</td>
+<td>{% if order.other is not none %}{{order.other}}{% endif %}</td>
+<td><a href="/add?id={{order.id}}">Редактировать</a> <a href="/deletecompany?id={{order.id}}">Удалить</a></td>
+</tr>
+{% endfor %}
+</table>
+</center>
+<!--/div-->
+{% endblock content %}

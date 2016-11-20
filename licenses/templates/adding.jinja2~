@@ -1,0 +1,88 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+
+<div class="content">
+<style type="text/css">
+.tftable {font-size:14px; .color:#000000;width:100%;border-width: 1px;border-color: #ebab3a;border-collapse: collapse; margin: auto;}
+.tftable th {font-size:14px;background-color:#e6983b;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a;text-align:left; color: #000000}
+.tftable tr {background-color:#f0c169;}
+.tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a; color: #000000}
+.tftable tr:hover {background-color:#ff0000;}
+.tftable a {color: #000000}
+</style>
+<form enctype="xlsparse" method="post">
+   <p><input type="file" name="f">
+   <input type="submit" value="Отправить"></p>
+</form> 
+<form action="addcompany" method="GET">
+<label name="id">{{id}}</label>
+<table class="tftable">
+<tr>
+<th>Выберите отходы из списка: </th>
+<td>
+<select name="waste">
+{% for val in list %}
+    <option value={{val.id}}>{{val.name}}</option>
+{% endfor %}
+</select>
+</td>
+</tr>
+<tr>
+<th>Выберите организацию из списка: </th>
+<td>
+<select name="company">
+{% for val in list %}
+    <option value={{val.id}}>{{val.name}}</option>
+{% endfor %}
+</select>
+</td>
+</tr>
+<tr>
+<th>Виды деятельности: </th>
+<td>
+<table>
+<tr>
+<th>Сбор: </th>
+<td><input type="text" name="c1" value={{c.c1}}></td>
+</tr>
+<tr>
+<th>Транспортирование: </th>
+<td><input type="text" name="c2" value={{c.c2}}></td>
+</tr>
+<tr>
+<th>Обезвреживание: </th>
+<td><input type="text" name="c3" value={{c.c3}}></td>
+</tr>
+<tr>
+<th>Использование: </th>
+<td><input type="text" name="c4" value={{c.c4}}></td>
+</tr>
+<tr>
+<th>Обработка: </th>
+<td><input type="text" name="c5" value={{c.c5}}></td>
+</tr>
+<tr>
+<th>Утилизация: </th>
+<td><input type="text" name="c6" value={{c.c6}}></td>
+</tr>
+<tr>
+<th>Размещение: </th>
+<td><input type="text" name="c7" value={{c.c7}}></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<th>Примечания:</th>
+<td><textarea name="other"></textarea></td>
+</tr>
+</table>
+<input type="submit" value="Сохранить"/>
+</form>
+
+
+
+</div>
+
+{% endblock content %}
