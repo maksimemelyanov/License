@@ -24,8 +24,12 @@ licenses/static/pyramid-16x16.png
 licenses/static/pyramid.png
 licenses/static/theme.css
 licenses/templates/404.jinja2
+licenses/templates/adding.jinja2
+licenses/templates/companies.jinja2
 licenses/templates/layout.jinja2
+licenses/templates/main.jinja2
 licenses/templates/mytemplate.jinja2
+licenses/templates/signin.jinja2
 licenses/views/__init__.py
 licenses/views/default.py
 licenses/views/notfound.py

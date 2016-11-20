@@ -163,14 +163,14 @@ def parse_view(request):
                     c7f = None
                 else:
                     k = '++++++++++++++'
-                w = DBSession.query(Waste).filter((Waste.name == ot or Waste.code == code) and Waste.danger == classe).first()
+                w = DBSession.query(Waste).filter(((Waste.name == ot) or (Waste.code == code)) and (Waste.danger == classe)).first()
                 k = '7'
                 if w is None:
                     new_w = Waste(name=ot, code=code, danger=classe)
                     DBSession.add(new_w)
                     DBSession.commit()
                 w = DBSession.query(Waste).filter(
-                    (Waste.name == ot or Waste.code == code) and Waste.danger == classe).first()
+                    ((Waste.name == ot) or (Waste.code == code)) and (Waste.danger == classe)).first()
                 citi = DBSession.query(City).filter(City.name == city).first()
                 k = '8'
                 if citi is None:
@@ -178,21 +178,20 @@ def parse_view(request):
                     DBSession.add(new_city)
                     DBSession.commit()
                 citi = DBSession.query(City).filter(City.name == city).first()
-                compani = DBSession.query(Company).filter(Company.name == org and Company.city == citi.id).first()
+                compani = DBSession.query(Company).filter((Company.name == org) and (Company.city == citi.id)).first()
                 k = '9'
                 if compani is None:
                     new_company = Company(name=org, city=citi.id)
                     DBSession.add(new_company)
                     DBSession.commit()
                 compani = DBSession.query(Company).filter(Company.name == org).first()
-                license = DBSession.query(License).filter(License.company == compani.id and License.waste == w.id).first()
-                k='10'
-                if license:
-                    try:
-                        DBSession.query(License).filter(License.company == compani.id and License.waste == w.id).first.delete()
+                try:
+                    deletinglic = DBSession.query(License).filter((License.company == compani.id) and (License.waste == w.id)).first()
+                    for li in deletinglic:
+                        DBSession.query(License).filter(License.id == li.id).delete()
                         DBSession.commit()
-                    except:
-                        k=' '
+                except:
+                    k=' '
                 new_license = License(company=compani.id, waste=w.id, collection=c1d, transportation=c2d,
                                       defusing=c3d, using=c4d, treatment=c5d, recovery=c6d, placement=c7d,
                                       collectionf=c1f, transportationf=c2f, defusingf=c3f, usingf=c4f,
@@ -298,11 +297,11 @@ def adding_view(request):
         return Response(db_err_msg, content_type='text/plain', status=500)
     return HTTPFound('/')
 
-view_config(route_name='deleting', request_method='GET')
-def del_view(request):
+@view_config(route_name='delete', request_method='GET')
+def deleting_view(request):
     try:
         DBSession = Session(bind=engine)
-        DBSession.query(License).filter(License.id == request.params['id'])
+        DBSession.query(License).filter(License.id == request.params['id']).delete()
         DBSession.commit()
     except DBAPIError:
         return HTTPFound('/')
