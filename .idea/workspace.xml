@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f590d60f-9a98-45b7-a6ad-88a34a13b8a3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Licenses.sqlite" afterPath="$PROJECT_DIR$/Licenses.sqlite" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tempbook.xls" afterPath="$PROJECT_DIR$/tempbook.xls" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/licenses/views/default.py" afterPath="$PROJECT_DIR$/licenses/views/default.py" />
     </list>
     <ignored path="LicenseProject.iws" />
@@ -42,8 +39,8 @@
       <file leaf-file-name="default.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/licenses/views/default.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="202" column="43" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
+            <state relative-caret-position="1725">
+              <caret line="178" column="62" selection-start-line="178" selection-start-column="62" selection-end-line="178" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -324,8 +321,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/licenses/views/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="202" column="43" selection-start-line="202" selection-start-column="43" selection-end-line="202" selection-end-column="43" />
+        <state relative-caret-position="1725">
+          <caret line="178" column="62" selection-start-line="178" selection-start-column="62" selection-end-line="178" selection-end-column="62" />
           <folding />
         </state>
       </provider>

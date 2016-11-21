@@ -175,14 +175,15 @@ def parse_view(request):
                     c7f = None
                 else:
                     k = '++++++++++++++'
-                w = DBSession.query(Waste).filter(((Waste.name == ot) or (Waste.code == code)) and (Waste.danger == classe)).first()
+                w = DBSession.query(Waste).filter(((Waste.name == ot) or (Waste.code == code)))
+                w = w.filter((Waste.danger == classe)).first()
                 k = '7'
                 if w is None:
                     new_w = Waste(name=ot, code=code, danger=classe)
                     DBSession.add(new_w)
                     DBSession.commit()
-                w = DBSession.query(Waste).filter(
-                    ((Waste.name == ot) or (Waste.code == code)) and (Waste.danger == classe)).first()
+                w = DBSession.query(Waste).filter(((Waste.name == ot) or (Waste.code == code)))
+                w = w.filter((Waste.danger == classe)).first()
                 citi = DBSession.query(City).filter(City.name == city).first()
                 k = '8'
                 if citi is None:
@@ -190,7 +191,8 @@ def parse_view(request):
                     DBSession.add(new_city)
                     DBSession.commit()
                 citi = DBSession.query(City).filter(City.name == city).first()
-                compani = DBSession.query(Company).filter((Company.name == org) and (Company.city == citi.id)).first()
+                compani = DBSession.query(Company).filter((Company.name == org))
+                compani = compani.filter((Company.city == citi.id)).first()
                 k = '9'
                 if compani is None:
                     new_company = Company(name=org, city=citi.id)
@@ -199,7 +201,7 @@ def parse_view(request):
                 compani = DBSession.query(Company).filter(Company.name == org).first()
                 try:
                     li = DBSession.query(License).filter(License.company == compani.id)
-                    li = li.filter(License.waste == w.id).first()#and (License.waste == w.id)).first()
+                    li = li.filter(License.waste == w.id)#and (License.waste == w.id)).first()
                     #for li in deletinglic:
                     DBSession.delete(li)
                     DBSession.commit()
