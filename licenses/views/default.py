@@ -16,12 +16,24 @@ from datetime import *
 def my_view(request):
     try:
         if request.authenticated_userid == None:
-            log = 'true'
-        else:
             log = None
+        else:
+            log = 'true'
         DBSession = Session(bind=engine)
-        comps = DBSession.query(License).all()
+        #query = DBSession.query(License, Waste, Company, City)
+        #query = query.join()
+        #records = query.all()
         complist = []
+        #for comp, w, company, city in records:
+         #   record = {'waste': w.name, 'code': w.code, 'class': w.danger, 'c1': comp.collection,
+         #             'c2': comp.transportation, 'c3': comp.defusing, 'c4': comp.using, 'c5': comp.treatment,
+         #             'c6': comp.recovery, 'c7': comp.placement,
+          #            'c1f': comp.collectionf, 'c2f': comp.transportationf, 'c3f': comp.defusingf,
+          #            'c4f': comp.usingf, 'c5f': comp.treatmentf, 'c6f': comp.recoveryf, 'c7f': comp.placementf,
+          #            'company': company.name, 'city': city.name, 'other': comp.other, 'id': comp.id}
+          #  complist.append(record)
+        comps = DBSession.query(License).all()
+
         for comp in comps:
             company = DBSession.query(Company).filter(comp.company == Company.id).first()
             city = DBSession.query(City).filter(company.city == City.id).first()
@@ -186,10 +198,11 @@ def parse_view(request):
                     DBSession.commit()
                 compani = DBSession.query(Company).filter(Company.name == org).first()
                 try:
-                    deletinglic = DBSession.query(License).filter((License.company == compani.id) and (License.waste == w.id)).first()
-                    for li in deletinglic:
-                        DBSession.query(License).filter(License.id == li.id).delete()
-                        DBSession.commit()
+                    li = DBSession.query(License).filter(License.company == compani.id)
+                    li = li.filter(License.waste == w.id).first()#and (License.waste == w.id)).first()
+                    #for li in deletinglic:
+                    DBSession.delete(li)
+                    DBSession.commit()
                 except:
                     k=' '
                 new_license = License(company=compani.id, waste=w.id, collection=c1d, transportation=c2d,
