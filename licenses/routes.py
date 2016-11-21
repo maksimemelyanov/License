@@ -16,6 +16,9 @@ def includeme(config):
     config.add_route('compadd', '/add', factory=HelloFactory)
     config.add_route('parse', '/xlsparse', factory=HelloFactory)
     config.add_route('adding', '/addlicense', factory=HelloFactory)
+    config.add_route('updating', '/update', factory=HelloFactory)
+
+    config.add_route('update', '/updating')
     config.add_route('delete', 'delete')
     config.add_route('login', '/login')
     config.add_route('logged', '/logged')

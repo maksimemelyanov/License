@@ -61,6 +61,114 @@ def comp_view(request):
         return Response(db_err_msg, content_type='text/plain', status=500)
     return {'list': complist, 'project': 'Licenses'}
 
+@view_config(route_name='updating', renderer='../templates/updating.jinja2')
+def upd_view(request):
+    try:
+
+        DBSession = Session(bind=engine)
+        lic = DBSession.query(License).filter(License.id == request.params['id']).first()
+        comp = DBSession.query(Company).filter(Company.id == lic.company).first()
+        city = DBSession.query(City).filter(City.id == comp.city).first()
+        waste = DBSession.query(Waste).filter(Waste.id == lic.waste).first()
+        other = lic.other
+        ec = {'c1': lic.collection, 'c2': lic.transportation, 'c3': lic.defusing, 'c4': lic.using, 'c5': lic.treatment, 'c6': lic.recovery, 'c7': lic.placement,
+                  'c1f': lic.collectionf, 'c2f': lic.transportationf, 'c3f': lic.defusingf, 'c4f': lic.usingf, 'c5f': lic.treatmentf, 'c6f': lic.recoveryf, 'c7f': lic.placementf}
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {'c': ec, 'company': comp, 'project': 'Licenses', 'city':city, 'waste': waste, 'other': other, 'id':request.params['id']}
+
+@view_config(route_name='update', renderer='../templates/updating.jinja2')
+def update_view(request):
+    try:
+        DBSession = Session(bind=engine)
+        DBSession.query(License).filter(License.id == request.params['id']).delete()
+        ot = request.params['w']
+        c1d = request.params['c1']
+        c1f = request.params['c11']
+        c2d = request.params['c2']
+        c2f = request.params['c21']
+        c3d = request.params['c3']
+        c3f = request.params['c31']
+        c4d = request.params['c4']
+        c4f = request.params['c41']
+        c5d = request.params['c5']
+        c5f = request.params['c51']
+        c6d = request.params['c6']
+        c6f = request.params['c61']
+        c7d = request.params['c7']
+        c7f = request.params['c71']
+        org = request.params['comp']
+        other = request.params['other']
+        if c1d == '':
+            c1d = None
+        else:
+            k = '+'
+        if c2d == '':
+            c2d = None
+        else:
+            k = '++'
+        if c3d == '':
+            c3d = None
+        else:
+            k = '+++'
+        if c4d == '':
+            c4d = None
+        else:
+            k = '++++'
+        if c5d == '':
+            c5d = None
+        else:
+            k = '+++++'
+        if c6d == '':
+            c6d = None
+        else:
+            k = '++++++'
+        if c7d == '':
+            c7d = None
+        else:
+            k = '+++++++'
+        if c1f == '':
+            c1f = None
+        else:
+            k = '++++++++'
+        if c2f == '':
+            c2f = None
+        else:
+            k = '+++++++++'
+        if c3f == '':
+            c3f = None
+        else:
+            k = '++++++++++'
+        if c4f == '':
+            c4f = None
+        else:
+            k = '+++++++++++'
+        if c5f == '':
+            c5f = None
+        else:
+            k = '++++++++++++'
+        if c6f == '':
+            c6f = None
+        else:
+            k = '+++++++++++++'
+        if c7f == '':
+            c7f = None
+        else:
+            k = '++++++++++++++'
+        w = DBSession.query(Waste).filter(Waste.id == ot).first()
+        compani = DBSession.query(Company).filter(Company.id == org).first()
+        new_license = License(company=compani.id, waste=w.id, collection=c1d, transportation=c2d,
+                              defusing=c3d, using=c4d, treatment=c5d, recovery=c6d, placement=c7d,
+                              collectionf=c1f, transportationf=c2f, defusingf=c3f, usingf=c4f,
+                              treatmentf=c5f, recoveryf=c6f, placementf=c7f, other=other)
+        DBSession.add(new_license)
+        DBSession.commit()
+
+    except DBAPIError:
+        return Response(k, content_type='text/plain', status=500)
+    return HTTPFound('/')
+
+
 @view_config(route_name='compadd', renderer='../templates/adding.jinja2')
 def comp_view(request):
     try:
@@ -98,9 +206,10 @@ def parse_view(request):
         rb = xlrd.open_workbook('tempbook.xls')
         sheet = rb.sheet_by_index(0)
         for rownum in range(sheet.nrows):
+            try:
                 row = sheet.row_values(rownum)
                 ot = row[0]
-                code = row[1]
+                code = str(row[1]).replace('.0', '')
                 classe = row[2]
                 c1d = row[3]
                 c1f = row[4]
@@ -203,7 +312,7 @@ def parse_view(request):
                     li = DBSession.query(License).filter(License.company == compani.id)
                     li = li.filter(License.waste == w.id)#and (License.waste == w.id)).first()
                     #for li in deletinglic:
-                    DBSession.delete(li)
+                    DBSession.query(License).filter(License.id == li.id).delete()
                     DBSession.commit()
                 except:
                     k=' '
@@ -213,6 +322,8 @@ def parse_view(request):
                                       treatmentf=c5f, recoveryf=c6f, placementf=c7f, other=other)
                 DBSession.add(new_license)
                 DBSession.commit()
+            except:
+                k=''
     except:
         return HTTPFound(location='/')
     return HTTPFound(location='/')

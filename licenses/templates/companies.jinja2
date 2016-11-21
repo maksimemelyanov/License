@@ -61,7 +61,7 @@ function myFunction() {
 .tftable th {font-size:12px;background-color:#e6983b;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a;text-align:left; color: #000000; text-align: center;}
 .tftable tr {background-color:#f0c169;}
 .tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a; color: #000000; text-align: center;}
-.tftable tr:hover {background-color:#ff0000;}
+.tftable tr:hover {background-color:#FFDFAE;}
 .tftable a {color: #000000}
 </style>
 
@@ -146,7 +146,7 @@ function myFunction() {
 <td id="company">{{order.company}}</td>
 <td id="city">{{order.city}}</td>
 <td>{% if order.other is not none %}{{order.other}}{% endif %}</td>
-<td><a href="/delete?id={{order.id}}">Удалить</a></td>
+<td><a href="/delete?id={{order.id}}">Удалить</a> <a href="/update?id={{order.id}}">Редактировать</a></td>
 </tr>
 {% endfor %}
 </table>
