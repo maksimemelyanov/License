@@ -1,0 +1,115 @@
+{% extends "layout.jinja2" %}
+
+{% block content %}
+
+<div class="content" width="50%">
+<style type="text/css">
+.tftable {font-size:14px; .color:#000000;width:50%;border-width: 1px;border-color: #ebab3a;border-collapse: collapse; margin: auto;}
+.tftable th {font-size:14px;background-color:#e6983b;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a;text-align:left; color: #000000; width: inherit}
+.tftable tr {background-color:#f0c169;}
+.tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #ebab3a; color: #000000}
+.tftable tr:hover {background-color:#ff0000;}
+.tftable a {color: #000000}
+ .field  {width: 100%}
+</style>
+<form action="/xlsparse" method="post" accept-charset="utf-8"
+      enctype="multipart/form-data">
+    <table class="tftable">
+        <tr>
+        <th>Загрузить из файла:</th>
+    <td>
+   <input type="file" name="f" id="f"> </td><td><input type="submit" value="Отправить"></td>
+        </tr></table>
+</form> 
+<form action="addlicense" type="multipart/form-data" method="GET">
+<input type="hidden" name="id" value={{id}}>
+<table class="tftable">
+<tr>
+<th>Выберите отходы из списка: </th>
+</tr>
+<tr>
+<td>
+<input name="waste" list="wastes" width="500px" class="field">
+<datalist id="wastes">
+{% for val in list %}
+    <option value={{val.id}}>{{val.code}} {{val.name}}</option>
+{% endfor %}
+</datalist>
+</input>
+</td>
+</tr>
+<tr>
+<th>Выберите организацию из списка: </th>
+</tr>
+<tr>
+<td>
+<input name="company" list="companies" width="500px" class="field">
+<datalist id="companies">
+{% for val in list1 %}
+    <option value={{val.id}}>{{val.name}}, {{val.city}}</option>
+{% endfor %}
+</datalist>
+</input>
+</td>
+</tr>
+<tr>
+<th>Виды деятельности: </th>
+    </tr>
+<tr>
+<td>
+<table>
+    <tr>
+        <th></th>
+        <th>По документам</th>
+        <th>По факту</th>
+    </tr>
+<tr>
+<th>Сбор: </th>
+<td><input type="text" name="c1" value={{c.c1}}></td><td><input type="text" name="c11" value={{c.c1f}}></td>
+</tr>
+<tr>
+<th>Транспортирование: </th>
+<td><input type="text" name="c2" value={{c.c2}}></td><td><input type="text" name="c21" value={{c.c2f}}></td>
+</tr>
+<tr>
+<th>Обезвреживание: </th>
+<td><input type="text" name="c3" value={{c.c3}}></td><td><input type="text" name="c31" value={{c.c3f}}></td>
+</tr>
+<tr>
+<th>Использование: </th>
+<td><input type="text" name="c4" value={{c.c4}}></td><td><input type="text" name="c41" value={{c.c4f}}></td>
+</tr>
+<tr>
+<th>Обработка: </th>
+<td><input type="text" name="c5" value={{c.c5}}></td><td><input type="text" name="c51" value={{c.c5f}}></td>
+</tr>
+<tr>
+<th>Утилизация: </th>
+<td><input type="text" name="c6" value={{c.c6}}></td><td><input type="text" name="c61" value={{c.c6f}}></td>
+</tr>
+<tr>
+<th>Размещение: </th>
+<td><input type="text" name="c7" value={{c.c7}}></td><td><input type="text" name="c71" value={{c.c7f}}></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<th>Примечания:</th></tr>
+<tr>
+<td><textarea name="other" class="field">-</textarea></td>
+</tr>
+<tr>
+    <th>
+        <input type="submit" value="Сохранить"  />
+    </th>
+</tr>
+</table>
+
+</form>
+
+
+
+</div>
+
+{% endblock content %}
