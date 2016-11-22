@@ -3,7 +3,7 @@ body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
   color: #ffffff;
-  background: #bc2131;
+  background: #9dbde7;
 }
 h1,
 h2,
@@ -38,11 +38,11 @@ p {
 }
 .starter-template .content h1 .smaller {
   font-size: 40px;
-  color: #f2b7bd;
+  color: #9dbde7;
 }
 .starter-template .content .lead {
   font-size: 25px;
-  color: #f2b7bd;
+  color: #9dbde7;
 }
 .starter-template .content .lead .font-normal {
   color: #ffffff;
@@ -69,11 +69,11 @@ p {
   margin-right: 0;
 }
 .starter-template .links ul li.current-version {
-  color: #f2b7bd;
+  color: #9dbde7;
   font-weight: 400;
 }
 .starter-template .links ul li a, a {
-  color: #f2b7bd;
+  color: #9dbde7;
   text-decoration: underline;
 }
 .starter-template .links ul li a:hover, a:hover {
@@ -81,7 +81,7 @@ p {
   text-decoration: underline;
 }
 .starter-template .links ul li .icon-muted {
-  color: #eb8b95;
+  color: #9dbde7;
   margin-right: 5px;
 }
 .starter-template .links ul li:hover .icon-muted {
@@ -90,7 +90,7 @@ p {
 .starter-template .copyright {
   margin-top: 10px;
   font-size: 0.9em;
-  color: #f2b7bd;
+  color: #9dbde7;
   text-transform: lowercase;
   float: right;
   right: 0;
