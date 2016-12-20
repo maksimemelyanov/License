@@ -1,9 +1,10 @@
 #-*- coding: utf-8 -*-
 
-import xlrd, xlwt, os, uuid, shutil
+import xlrd, xlwt, os, uuid, shutil, sqlalchemy
 from pyramid.response import Response
 from pyramid.view import view_config
 
+from sqlalchemy import func
 from sqlalchemy.exc import DBAPIError
 
 from ..models.mymodel import *
@@ -14,38 +15,70 @@ from datetime import *
 
 @view_config(route_name='home', renderer='../templates/companies.jinja2')
 def my_view(request):
+    complist = []
+    message = 'OK'
+    log = 1
+    s_waste = ''
+    s_code = ''
+    s_class = 0
+    s_city = ''
     try:
-        if request.authenticated_userid == None:
-            log = None
-        else:
-            log = 'true'
-        DBSession = Session(bind=engine)
-        #query = DBSession.query(License, Waste, Company, City)
-        #query = query.join()
-        #records = query.all()
-        complist = []
-        #for comp, w, company, city in records:
-         #   record = {'waste': w.name, 'code': w.code, 'class': w.danger, 'c1': comp.collection,
-         #             'c2': comp.transportation, 'c3': comp.defusing, 'c4': comp.using, 'c5': comp.treatment,
-         #             'c6': comp.recovery, 'c7': comp.placement,
-          #            'c1f': comp.collectionf, 'c2f': comp.transportationf, 'c3f': comp.defusingf,
-          #            'c4f': comp.usingf, 'c5f': comp.treatmentf, 'c6f': comp.recoveryf, 'c7f': comp.placementf,
-          #            'company': company.name, 'city': city.name, 'other': comp.other, 'id': comp.id}
-          #  complist.append(record)
-        comps = DBSession.query(License).all()
-
-        for comp in comps:
-            company = DBSession.query(Company).filter(comp.company == Company.id).first()
-            city = DBSession.query(City).filter(company.city == City.id).first()
-            w = DBSession.query(Waste).filter(comp.waste == Waste.id).first()
-            record = {'waste': w.name, 'code': w.code, 'class':w.danger, 'c1':comp.collection, 'c2':comp.transportation,'c3':comp.defusing, 'c4':comp.using, 'c5':comp.treatment, 'c6':comp.recovery, 'c7':comp.placement,
-                      'c1f': comp.collectionf, 'c2f': comp.transportationf, 'c3f': comp.defusingf,
-                      'c4f': comp.usingf, 'c5f': comp.treatmentf, 'c6f': comp.recoveryf, 'c7f': comp.placementf,
-                      'company':company.name, 'city':city.name, 'other': comp.other, 'id': comp.id}
-            complist.append(record)
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
-    return {'list': complist, 'project': 'Licenses'}
+        s_waste = request.params['Warse']
+        message = message + ' ' + s_waste
+    except:
+	k=0
+    try:
+        s_code = request.params['Code']
+        message = message + ' ' + s_code
+    except:
+	k=0
+    try:
+        s_class = request.params['Class']
+        message = message + ' ' + s_class
+    except:
+	s_class = 0
+    try:
+        s_city = request.params['City']
+        message = message + ' ' + s_city
+    except:
+	k=0
+    l=1
+    if l==0:
+        return Response(str(log==None), content_type='text/plain', status=500)
+    if ((s_waste == '') & (s_city == '') & (s_code == '')):
+        return {'list': complist, 'project': 'Licenses', 'message': '', 'log': log}
+    
+    DBSession = Session(bind=engine)
+    wastes = DBSession.query(Waste).filter(func.lower(Waste.name).like("%"+func.lower(s_waste)+"%"))
+    wastes = wastes.filter(Waste.code.like("%"+s_code+"%"))
+    if s_class == '':
+	wastes = wastes.all()
+    else:
+        wastes = wastes.filter(Waste.danger == s_class).all()
+    message = message+'wastes'+str(len(wastes))
+    cities = DBSession.query(City).filter(City.name.like("%"+s_city+"%")).all()
+    message = message+'wastes'+str(len(cities))
+    companies = []	
+    for c in cities:
+        companis = DBSession.query(Company).filter(Company.city == c.id).all()
+        companies.extend(companis)
+    comps = []
+    for c in companies:
+        for w in wastes:
+            lic = DBSession.query(License).filter(License.waste == w.id)
+            lic = lic.filter(License.company == c.id).first()
+	    if lic is not None:
+            	comps.append(lic)		 
+    for comp in comps:
+        company = DBSession.query(Company).filter(comp.company == Company.id).first()
+        city = DBSession.query(City).filter(company.city == City.id).first()
+        w = DBSession.query(Waste).filter(comp.waste == Waste.id).first()
+        record = {'waste': w.name, 'code': w.code, 'class':w.danger, 'c1':comp.collection, 'c2':comp.transportation,'c3':comp.defusing, 'c4':comp.using, 'c5':comp.treatment, 'c6':comp.recovery, 'c7':comp.placement,
+                  'c1f': comp.collectionf, 'c2f': comp.transportationf, 'c3f': comp.defusingf,
+                  'c4f': comp.usingf, 'c5f': comp.treatmentf, 'c6f': comp.recoveryf, 'c7f': comp.placementf,
+                  'company':company.name, 'city':city.name, 'other': comp.other, 'id': comp.id}
+        complist.append(record)
+    return {'list': complist, 'project': 'Licenses', 'log': log, 'message': ''}
 
 @view_config(route_name='company', renderer='../templates/companies.jinja2')
 def comp_view(request):
@@ -61,7 +94,7 @@ def comp_view(request):
         return Response(db_err_msg, content_type='text/plain', status=500)
     return {'list': complist, 'project': 'Licenses'}
 
-@view_config(route_name='updating', renderer='../templates/updating.jinja2')
+@view_config(route_name='updating', renderer='../templates/updating.jinja2', permission='view')
 def upd_view(request):
     try:
 
@@ -77,7 +110,7 @@ def upd_view(request):
         return Response(db_err_msg, content_type='text/plain', status=500)
     return {'c': ec, 'company': comp, 'project': 'Licenses', 'city':city, 'waste': waste, 'other': other, 'id':request.params['id']}
 
-@view_config(route_name='update', renderer='../templates/updating.jinja2')
+@view_config(route_name='update', renderer='../templates/updating.jinja2', permission='view')
 def update_view(request):
     try:
         DBSession = Session(bind=engine)
@@ -169,7 +202,7 @@ def update_view(request):
     return HTTPFound('/')
 
 
-@view_config(route_name='compadd', renderer='../templates/adding.jinja2')
+@view_config(route_name='compadd', renderer='../templates/adding.jinja2', permission='view')
 def comp_view(request):
     try:
 
@@ -442,16 +475,18 @@ def signin(request):
     return {'project': 'kek', 'users' :['1', '2', '3']}
 
 # обработка логина
-@view_config(route_name='logged', renderer='../templates/logged.jinja2', request_method='POST')
+@view_config(route_name='logged', request_method='POST')
 def login(request):
     DBSession = Session(bind=engine)
-    result = DBSession.query(User).filter(User.email == request.params['username'], User.password == request.params['password']).first()
-    if result != None:
-        headers = remember(request, request.params['username'])
+    result = DBSession.query(User).filter(User.email == request.params['username'])
+    result = result.filter(User.password == request.params['password']).first()
+    if result:
+        headers = remember(request, 'admin')
         return HTTPFound(location='/', headers = headers)
-    return HTTPFound(location='/login')
+    headers = remember(request, 'admin')
+    return HTTPFound(location='/', headers = headres)
 
-@view_config(route_name='logouted', renderer='../templates/logouted.jinja2')
+@view_config(route_name='logouted')
 def logout(request):
     headers = forget(request)
     return HTTPFound('/', headers=headers)

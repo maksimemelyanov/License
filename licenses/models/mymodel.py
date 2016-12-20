@@ -10,7 +10,7 @@ from .meta import Base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('sqlite:///Licenses.sqlite')
+engine = create_engine('sqlite:///Licenses.sqlite', encoding='utf-8')
 Session = sessionmaker()
 Base = declarative_base(bind=engine)
 

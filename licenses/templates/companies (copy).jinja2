@@ -1,7 +1,58 @@
 {% extends "layout.jinja2" %}
 
 {% block content %}
+<script type="text/javascript">
 
+function myFunction() {
+  // Declare variables
+  console.log("У Вас включён JavaScript!");
+  var input2, input3, filter2, filter3, table, tr, td2, td3, i, input0, input1, filter0, filter1, filter5, input5, td0, td1, info, tr1, input4, filter4, td4;
+  input2 = document.getElementById("InputCode");
+  filter2 = input2.value.toUpperCase();
+  input3 = document.getElementById("InputWarse");
+  filter3 = input3.value.toUpperCase();
+  table = document.getElementById("myTable");
+
+  input0 = document.getElementById("InputCompany");
+  filter0 = input0.value.toUpperCase();
+  input1 = document.getElementById("InputCity");
+  filter1 = input1.value.toUpperCase();
+
+  input4 = document.getElementById("InputClass");
+  filter4 = input4.value.toUpperCase();
+    input5 = document.getElementById("InputType");
+  filter5 = input5.value.toUpperCase();
+
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    var tds, td5, a, b, c;
+    tds = tr[i].getElementsByTagName("td");
+    td0 = tds[tds.length-4];
+    td1 = tds[tds.length-3];
+    td2 = tds[1];
+    td3 = tds[0];
+    td4 = tds[2];
+      td5 = false;
+     a =  tr[i].getElementsByTagName("th");
+      for (b = 0; b<a.length; b++)
+      {
+          if ((a[b].innerHTML.toUpperCase().indexOf(filter5) > -1 ))
+                  td5 = true;
+      }
+
+    if (td2 && td3 && td0 && td1 && td4) {
+      if ((td5 == true) && (td2.innerHTML.toUpperCase().indexOf(filter2) > -1 ) && (td3.innerHTML.toUpperCase().indexOf(filter3) > -1 ) && (td0.innerHTML.toUpperCase().indexOf(filter0) > -1 ) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1 ) && (td4.innerHTML.toUpperCase().indexOf(filter4) > -1 )) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+</script>
 
 <!--div class="content" width="100%"-->
 <center>
@@ -13,30 +64,20 @@
 .tftable tr:hover {background-color: #bedbfe;}
 .tftable a {color: #000000}
 </style>
-{{message}}
-<table class="tftable" border="1" height="auto">
-<tr>
-<td >
-{% if log is none%}<a href="/login">Войти</a>{% endif %}
-{% if log is not none %}<a href="/logout">Выйти</a>{% endif %}
 
-</td>
-</tr>
-<tr>
-<td >
-{% if log is not none%}<a href="/add?id=0">Добавить</a>
-{% endif %}
-</td> 
-<td>
-<form action="/" method="GET">
 <table class="tftable" border="1" height="auto">
+<tr>
+    {% if log is none%}<td ><a href="/login">Войти</a></td><tr><td ><a href="/add?id=0">Добавить</a></td>
+    {% else %} <td ><a href="/logout">Выйти</a></td><tr><td ><a href="/add?id=0">Добавить</a></td>
+    {% endif %}
 <td>
-<input type="hidden" name="log" value={{log}}>
-<input type="text" width = "15%" name="Warse" onkeyup="myFunction()" placeholder="Наименование отхода...">{{k1}}</td>
-<td><input type="text" width = "150px" name="Code" onkeyup="myFunction()" placeholder="Код ФККО...">{{k2}}</td>
-<td><input type="text" width = "150px" name="Class" onkeyup="myFunction()" placeholder="Класс опасности...">{{k3}}</td>
-<td><input type="text" width = "150px" name="City" onkeyup="myFunction()" placeholder="Город...">{{k5}}</td>
-<td><input type="submit"></td></tr></table></form></td></tr>
+<input type="text" width = "15%" id="InputWarse" onkeyup="myFunction()" placeholder="Наименование отхода..."></td>
+<td><input type="text" width = "150px" id="InputCode" onkeyup="myFunction()" placeholder="Код ФККО..."></td>
+<td><input type="text" width = "150px" id="InputClass" onkeyup="myFunction()" placeholder="Класс опасности..."></td>
+<td><input type="text" width = "150px" id="InputType" onkeyup="myFunction()" placeholder="Вид деятельности..."></td>
+<td><input type="text" width = "150px" id="InputCity" onkeyup="myFunction()" placeholder="Город..."></td>
+<td><input type="text" width = "150px" id="InputCompany" onkeyup="myFunction()" placeholder="Название организации...">
+</td></tr>
 </table>
 <br>
 <table id="myTable" class="tftable" border="1" height="100%">
@@ -105,11 +146,7 @@
 <td id="company">{{order.company}}</td>
 <td id="city">{{order.city}}</td>
 <td>{% if order.other is not none %}{{order.other}}{% endif %}</td>
-<td>
-{% if log is not none%}
-<a href="/delete?id={{order.id}}">Удалить</a> <a href="/update?id={{order.id}}">Редактировать</a>
-{% endif %}
-</td>
+<td><a href="/delete?id={{order.id}}">Удалить</a> <a href="/update?id={{order.id}}">Редактировать</a></td>
 </tr>
 {% endfor %}
 </table>

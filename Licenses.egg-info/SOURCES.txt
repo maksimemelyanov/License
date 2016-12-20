@@ -30,6 +30,7 @@ licenses/templates/layout.jinja2
 licenses/templates/main.jinja2
 licenses/templates/mytemplate.jinja2
 licenses/templates/signin.jinja2
+licenses/templates/updating.jinja2
 licenses/views/__init__.py
 licenses/views/default.py
 licenses/views/notfound.py
