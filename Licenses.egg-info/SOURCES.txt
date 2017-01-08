@@ -25,6 +25,7 @@ licenses/static/pyramid.png
 licenses/static/theme.css
 licenses/templates/404.jinja2
 licenses/templates/adding.jinja2
+licenses/templates/companies (copy).jinja2
 licenses/templates/companies.jinja2
 licenses/templates/layout.jinja2
 licenses/templates/main.jinja2

@@ -1,0 +1,10 @@
+{% block content %}
+<script language="JavaScript">
+var pass = prompt("Введите пароль:", "");
+if (pass == null)  window.location = "/";
+else if (pass.toLowerCase() == "ecolog9666")  
+      window.location = "/update?id={{id}}";
+else  window.location = "/";
+</script>
+{% endblock content %}
+

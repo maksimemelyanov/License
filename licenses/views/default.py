@@ -17,7 +17,7 @@ from datetime import *
 def my_view(request):
     complist = []
     message = 'OK'
-    log = 1
+    log = 0
     s_waste = ''
     s_code = ''
     s_class = 0
@@ -63,10 +63,74 @@ def my_view(request):
         companis = DBSession.query(Company).filter(Company.city == c.id).all()
         companies.extend(companis)
     comps = []
+    t1 = 0
+    t2 = 0
+    t3 = 0
+    t4 = 0
+    t5 = 0
+    t6 = 0
+    t7 = 0
+    try:
+        t1 = request.params['t1']
+    except:
+	t1 = 0
+    try:
+        t2 = request.params['t2']
+    except:
+	t2 = 0
+    try:
+        t3 = request.params['t3']
+    except:
+	t3 = 0
+    try:
+        t4 = request.params['t4']
+    except:
+	t4 = 0
+    try:
+        t5 = request.params['t5']
+    except:
+	t5 = 0
+    try:
+        t6 = request.params['t6']
+    except:
+	t6 = 0
+    try:
+        t7 = request.params['t7']
+    except:
+	t7 = 0
     for c in companies:
         for w in wastes:
             lic = DBSession.query(License).filter(License.waste == w.id)
-            lic = lic.filter(License.company == c.id).first()
+            lic = lic.filter(License.company == c.id)
+            if (t1=="1"):
+                lic = lic.filter(License.collection != None)
+            else:
+                pp=0
+            if (t2=="1"):
+                lic = lic.filter(License.transportation != None)
+            else:
+                pp=0
+            if (t3=="1"):
+                lic = lic.filter(License.defusing != None)
+            else:
+                pp=0
+            if (t4=="1"):
+                lic = lic.filter(License.using != None)
+            else:
+                pp=0
+            if (t5=="1"):
+                lic = lic.filter(License.treatment != None)
+            else:
+                pp=0
+            if (t6=="1"):
+                lic = lic.filter(License.recovery != None)
+            else:
+                pp=0
+            if (t7=="1"):
+                lic = lic.filter(License.placement != None)
+            else:
+                pp=0
+            lic = lic.first()
 	    if lic is not None:
             	comps.append(lic)		 
     for comp in comps:
@@ -78,7 +142,7 @@ def my_view(request):
                   'c4f': comp.usingf, 'c5f': comp.treatmentf, 'c6f': comp.recoveryf, 'c7f': comp.placementf,
                   'company':company.name, 'city':city.name, 'other': comp.other, 'id': comp.id}
         complist.append(record)
-    return {'list': complist, 'project': 'Licenses', 'log': log, 'message': ''}
+    return {'list': complist, 'project': 'Licenses', 'log': log, 'message': '', 'b1':s_waste, 'b2':s_code, 'b3':s_class, 'b4':s_city, 'tt1':t1, 'tt2':t2, 'tt3':t3, 'tt4':t4, 'tt5':t5, 'tt6':t6, 'tt7':t7}
 
 @view_config(route_name='company', renderer='../templates/companies.jinja2')
 def comp_view(request):
@@ -473,6 +537,18 @@ def signin(request):
         headers = forget(request)
     else: return HTTPFound(location='../', headers = None)
     return {'project': 'kek', 'users' :['1', '2', '3']}
+
+@view_config(route_name='upp', renderer='../templates/upd.jinja2')
+def upp(request):
+    return {'id': request.params['id']}
+
+@view_config(route_name='upp1', renderer='../templates/add.jinja2')
+def upp1(request):
+    return {'id': request.params['id']}
+
+@view_config(route_name='upp2', renderer='../templates/del.jinja2')
+def upp2(request):
+    return {'id': request.params['id']}
 
 # обработка логина
 @view_config(route_name='logged', request_method='POST')

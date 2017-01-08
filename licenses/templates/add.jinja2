@@ -1,0 +1,9 @@
+{% block content %}
+<script language="JavaScript">
+var pass = prompt("Введите пароль:", "");
+if (pass == null)  window.location = "/";
+else if (pass.toLowerCase() == "ecolog9666")  
+      window.location = "/adding?id=0";
+else  window.location = "/";
+</script>
+{% endblock content %}

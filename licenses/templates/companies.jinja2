@@ -17,13 +17,6 @@
 <table class="tftable" border="1" height="auto">
 <tr>
 <td >
-{% if log is none%}<a href="/login">Войти</a>{% endif %}
-{% if log is not none %}<a href="/logout">Выйти</a>{% endif %}
-
-</td>
-</tr>
-<tr>
-<td >
 {% if log is not none%}<a href="/add?id=0">Добавить</a>
 {% endif %}
 </td> 
@@ -32,11 +25,28 @@
 <table class="tftable" border="1" height="auto">
 <td>
 <input type="hidden" name="log" value={{log}}>
-<input type="text" width = "15%" name="Warse" onkeyup="myFunction()" placeholder="Наименование отхода...">{{k1}}</td>
-<td><input type="text" width = "150px" name="Code" onkeyup="myFunction()" placeholder="Код ФККО...">{{k2}}</td>
-<td><input type="text" width = "150px" name="Class" onkeyup="myFunction()" placeholder="Класс опасности...">{{k3}}</td>
-<td><input type="text" width = "150px" name="City" onkeyup="myFunction()" placeholder="Город...">{{k5}}</td>
-<td><input type="submit"></td></tr></table></form></td></tr>
+<input type="text" width = "15%" name="Warse" onkeyup="myFunction()" placeholder="Наименование отхода..." value={{b1}}>{{k1}}</td>
+<td><input type="text" width = "150px" name="Code" onkeyup="myFunction()" placeholder="Код ФККО..."value={{b2}}>{{k2}}</td>
+<td><input type="text" width = "150px" name="Class" onkeyup="myFunction()" placeholder="Класс опасности..." value={{b3}}>{{k3}}</td>
+<td><p align="left">
+<input type="checkbox" name="t1" value="1" {% if tt1 == "1"%}checked
+{% endif %}>Сбор<br>
+<input type="checkbox" name="t2" value="1" {% if tt2 == "1"%}checked
+{% endif %}>Транспортирование<br>
+<input type="checkbox" name="t3" value="1" {% if tt3 == "1"%}checked
+{% endif %}>Обезвреживание<br>
+<input type="checkbox" name="t4" value="1" {% if tt4 == "1"%}checked
+{% endif %}>Использование<br>
+<input type="checkbox" name="t5" value="1" {% if tt5 == "1"%}checked
+{% endif %}>Обработка<br>
+<input type="checkbox" name="t6" value="1" {% if tt6 == "1"%}checked
+{% endif %}>Утилизация<br>
+<input type="checkbox" name="t7" value="1" {% if tt7 == "1"%}checked
+{% endif %}>Размещение<br>
+ </p>
+</td>
+<td><input type="text" width = "150px" name="City" onkeyup="myFunction()" placeholder="Город..." value={{b4}}>{{k5}}</td>
+<td><input type="submit" value="Поиск"></td></tr></table></form></td></tr>
 </table>
 <br>
 <table id="myTable" class="tftable" border="1" height="100%">
@@ -107,7 +117,7 @@
 <td>{% if order.other is not none %}{{order.other}}{% endif %}</td>
 <td>
 {% if log is not none%}
-<a href="/delete?id={{order.id}}">Удалить</a> <a href="/update?id={{order.id}}">Редактировать</a>
+<a href="/del?id={{order.id}}">Удалить</a> <a href="/upd?id={{order.id}}">Редактировать</a>
 {% endif %}
 </td>
 </tr>
