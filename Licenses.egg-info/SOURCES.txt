@@ -24,13 +24,17 @@ licenses/static/pyramid-16x16.png
 licenses/static/pyramid.png
 licenses/static/theme.css
 licenses/templates/404.jinja2
+licenses/templates/add.jinja2
 licenses/templates/adding.jinja2
 licenses/templates/companies (copy).jinja2
 licenses/templates/companies.jinja2
+licenses/templates/del.jinja2
 licenses/templates/layout.jinja2
 licenses/templates/main.jinja2
 licenses/templates/mytemplate.jinja2
+licenses/templates/security.js
 licenses/templates/signin.jinja2
+licenses/templates/upd.jinja2
 licenses/templates/updating.jinja2
 licenses/views/__init__.py
 licenses/views/default.py

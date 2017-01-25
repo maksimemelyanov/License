@@ -28,7 +28,8 @@ def my_view(request):
     except:
 	k=0
     try:
-        s_code = request.params['Code']
+        s_code = request.params['Code'].replace(' ', '')
+        print(s_code)
         message = message + ' ' + s_code
     except:
 	k=0
@@ -38,7 +39,7 @@ def my_view(request):
     except:
 	s_class = 0
     try:
-        s_city = request.params['City']
+        s_city = request.params['City'].capitalize()
         message = message + ' ' + s_city
     except:
 	k=0
