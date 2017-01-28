@@ -408,7 +408,7 @@ def parse_view(request):
                 compani = DBSession.query(Company).filter(Company.name == org).first()
                 try:
                     li = DBSession.query(License).filter(License.company == compani.id)
-                    li = li.filter(License.waste == w.id)#and (License.waste == w.id)).first()
+                    li = li.filter(License.waste == w.id).first()#and (License.waste == w.id)).first()
                     #for li in deletinglic:
                     DBSession.query(License).filter(License.id == li.id).delete()
                     DBSession.commit()
