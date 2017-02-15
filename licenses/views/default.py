@@ -150,7 +150,7 @@ def my_view(request):
                   'c4f': comp.usingf, 'c5f': comp.treatmentf, 'c6f': comp.recoveryf, 'c7f': comp.placementf,
                   'company':company.name, 'city':city.name, 'other': comp.other, 'id': comp.id}
         complist.append(record)
-    return {'list': complist, 'project': 'Licenses', 'log': log, 'message': '', 'b1':s_waste, 'b2':s_code, 'b3':s_class, 'b4':s_city, 'tt1':t1, 'tt2':t2, 'tt3':t3, 'tt4':t4, 'tt5':t5, 'tt6':t6, 'tt7':t7}
+    return {'list': complist, 'project': 'Licenses', 'log': log, 'message': '', 'b1':s_waste, 'b2':s_code, 'b3':s_class, 'b4':s_city, 'comp1':s_comp, 'tt1':t1, 'tt2':t2, 'tt3':t3, 'tt4':t4, 'tt5':t5, 'tt6':t6, 'tt7':t7}
 
 @view_config(route_name='company', renderer='../templates/companies.jinja2')
 def comp_view(request):
