@@ -22,8 +22,14 @@ def my_view(request):
     s_code = ''
     s_class = 0
     s_city = ''
+    s_comp = ''
     try:
         s_waste = request.params['Warse']
+        message = message + ' ' + s_waste
+    except:
+	k=0
+    try:
+        s_comp = request.params['Company'].capitalize()
         message = message + ' ' + s_waste
     except:
 	k=0
@@ -61,7 +67,8 @@ def my_view(request):
     message = message+'wastes'+str(len(cities))
     companies = []	
     for c in cities:
-        companis = DBSession.query(Company).filter(Company.city == c.id).all()
+        companis = DBSession.query(Company).filter(Company.city == c.id)
+	companis = DBSession.query(Company).filter(Company.name.like("%"+s_comp+"%")).all()
         companies.extend(companis)
     comps = []
     t1 = 0
